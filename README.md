@@ -2,7 +2,24 @@
 
 [![VAYU](vayu_logo.png)](https://github.com/Nsurya1/VAYU-air-purifier)
 
+[![Live Web Dashboard](https://img.shields.io/badge/Live%20Web%20Dashboard-vayumonitoring.netlify.app-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://vayumonitoring.netlify.app/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-VAYU--air--purifier-181717?style=for-the-badge&logo=github)](https://github.com/Nsurya1/VAYU-air-purifier)
+[![Firmware](https://img.shields.io/badge/ESP32--S3-Dual--Core%20240MHz-E7352C?style=for-the-badge&logo=espressif&logoColor=white)](https://github.com/Nsurya1/VAYU-air-purifier)
+
+> 🌐 **Live Web Monitor & Cloud Telemetry:** [https://vayumonitoring.netlify.app/](https://vayumonitoring.netlify.app/)
+
 **SOCHI VAYU** is an industrial-grade smart air quality and environmental telemetry solution combining edge microcontrollers, optical multi-sensor modules, and modern web dashboards.
+
+---
+
+## 🌐 Live Cloud Deployment
+
+Access the production telemetry dashboard instantly from anywhere:
+👉 **[https://vayumonitoring.netlify.app/](https://vayumonitoring.netlify.app/)**
+
+- **Zero Software Setup:** Connect directly to your ESP32-S3 over USB-C via the browser's native WebSerial API (115200 Baud).
+- **Cross-Platform:** Works on Chrome, Microsoft Edge, Opera, Brave, and other Chromium browsers on Windows, macOS, Linux, and Android.
+- **5 Integrated Screens:** Real-time AQI ring gauge, 6-parameter summary cards, multi-wave air quality trends, live telemetry streams, and hardware diagnostics.
 
 ---
 
@@ -48,9 +65,9 @@
 ## 🛠️ Quick Start
 
 ### 1. Launch the Live Web Dashboard
-Open `index.html` in any Chromium-based browser (Chrome, Edge, Opera, Brave).
+Visit **[https://vayumonitoring.netlify.app/](https://vayumonitoring.netlify.app/)** or open `index.html` locally in any Chromium browser.
 
-1. Click **Connect Device** (or use the WebSerial connect button).
+1. Click **Connect Device** (WebSerial API).
 2. Select your ESP32-S3 serial port (115200 baud).
 3. Telemetry streams directly in real-time.
 

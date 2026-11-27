@@ -14,6 +14,7 @@
   - `CUBIC AM1008W (5-in-1 NDIR/Laser)`
   - `WebSerial Live Streaming (115200 Baud)`
   - `Standalone Wi-Fi Hotspot (192.168.4.1)`
+  - `Live Netlify Dashboard: https://vayumonitoring.netlify.app/`
   - `Zero-Simulation Physical Data`
 
 ### Speaker Script (What to say to your boss):
