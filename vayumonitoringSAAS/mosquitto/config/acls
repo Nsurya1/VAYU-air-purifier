@@ -1,0 +1,26 @@
+# =======================================================
+# SOCHI VAYU - Mosquitto Access Control List (ACL)
+# Local-Network Industrial Air Quality Platform
+# =======================================================
+
+# 1. Backend Ingestion Core Service
+user vayu_backend
+topic read vayu/devices/+/telemetry
+topic read vayu/devices/+/status
+topic readwrite vayu/devices/+/commands
+topic read $SYS/#
+
+# 2. Simulator Harness
+user vayu_simulator
+topic write vayu/devices/+/telemetry
+topic write vayu/devices/+/status
+topic read vayu/devices/+/commands
+
+# 3. Hardware Devices (Default shared test credential)
+user vayu_device
+topic write vayu/devices/+/telemetry
+topic write vayu/devices/+/status
+topic read vayu/devices/+/commands
+
+# 4. Pattern-based rule for physical devices where username matches device ID
+pattern readwrite vayu/devices/%u/#

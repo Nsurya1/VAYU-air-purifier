@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOCHI VAYU - Executive Project Presentation</title>
+<style>
+    :root {
+        --bg: #0b0f19;
+        --surface: #141c2e;
+        --surface-hover: #1b263e;
+        --border: #23314d;
+        --text: #f0f6fc;
+        --text-muted: #8b9bb4;
+        --cyan: #38bdf8;
+        --blue: #2563eb;
+        --green: #10b981;
+        --amber: #f59e0b;
+        --red: #ef4444;
+        --purple: #a855f7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Top Navigation Toolbar */
+    .toolbar {
+        height: 54px;
+        background: #080b12;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 24px;
+        z-index: 100;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .brand-logo {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: linear-gradient(135deg, var(--cyan), var(--blue));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 14px;
+        color: #fff;
+    }
+
+    .brand-title {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        color: var(--text);
+    }
+
+    .brand-subtitle {
+        font-size: 12px;
+        color: var(--text-muted);
+        border-left: 1px solid var(--border);
+        padding-left: 12px;
+        margin-left: 4px;
+    }
+
+    .nav-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .slide-counter {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cyan);
+        background: rgba(56, 189, 248, 0.1);
+        padding: 4px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .btn {
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+
+    .btn:hover {
+        background: var(--surface-hover);
+        border-color: var(--cyan);
+    }
+
+    .btn-primary {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background: #1d4ed8;
+    }
+
+    /* Presentation Deck Area */
+    .presentation-container {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 40px;
+    }
+
+    .slide {
+        position: absolute;
+        width: calc(100% - 80px);
+        max-width: 1280px;
+        height: calc(100% - 48px);
+        max-height: 720px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        padding: 40px 48px;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.96) translateX(40px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .slide.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1) translateX(0);
+    }
+
+    /* Slide Header */
+    .slide-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 16px;
+    }
+
+    .slide-category {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 4px;
+    }
+
+    .slide-title {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--text);
+    }
+
+    .slide-badge {
+        font-size: 11px;
+        font-weight: 700;
+        background: rgba(16, 185, 129, 0.15);
+        color: var(--green);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        padding: 4px 10px;
+        border-radius: 8px;
+    }
+
+    .slide-body {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        gap: 24px;
+    }
+
+    /* Column layouts */
+    .col-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        width: 100%;
+    }
+
+    .col-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        width: 100%;
+    }
+
+    .col-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        width: 100%;
+    }
+
+    /* Content Cards */
+    .card {
+        background: #0f1523;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .card-title {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--cyan);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .card-subtitle {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: -8px;
+    }
+
+    ul.bullet-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    ul.bullet-list li {
+        font-size: 13px;
+        line-height: 1.5;
+        color: #cbd5e1;
+        position: relative;
+        padding-left: 18px;
+    }
+
+    ul.bullet-list li::before {
+        content: '▹';
+        position: absolute;
+        left: 0;
+        color: var(--cyan);
+        font-weight: bold;
+    }
+
+    ul.bullet-list strong {
+        color: #fff;
+    }
+
+    /* Architecture Flow Box */
+    .flow-row {
+        display: flex;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .flow-step {
+        flex: 1;
+        background: #0f1523;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .flow-step-num {
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--cyan);
+        letter-spacing: 1px;
+    }
+
+    .flow-step-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .flow-arrow {
+        display: flex;
+        align-items: center;
+        color: var(--cyan);
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    /* Tables */
+    table.data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    table.data-table th, table.data-table td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+    }
+
+    table.data-table th {
+        background: #0b0f19;
+        color: var(--cyan);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    table.data-table tr:hover {
+        background: rgba(56, 189, 248, 0.04);
+    }
+
+    /* Title Slide Custom Style */
+    .title-slide {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 40px;
+        background: radial-gradient(circle at center, #172554 0%, var(--surface) 70%);
+    }
+
+    .title-tag {
+        display: inline-block;
+        padding: 6px 16px;
+        background: rgba(56, 189, 248, 0.15);
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--cyan);
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .title-heading {
+        font-size: 46px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 12px;
+    }
+
+    .title-subheading {
+        font-size: 20px;
+        font-weight: 600;
+        color: #cbd5e1;
+        max-width: 800px;
+        margin-bottom: 20px;
+        line-height: 1.4;
+    }
+
+    .title-desc {
+        font-size: 14px;
+        color: var(--text-muted);
+        max-width: 720px;
+        line-height: 1.6;
+        margin-bottom: 32px;
+    }
+
+    .badge-bar {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pill {
+        background: #0f1523;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #94a3b8;
+    }
+
+    /* Bottom Status Bar */
+    .statusbar {
+        height: 38px;
+        background: #080b12;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 24px;
+        font-size: 12px;
+        color: var(--text-muted);
+    }
+
+    .progress-bar-container {
+        height: 3px;
+        background: #1e293b;
+        width: 100%;
+        position: relative;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--cyan), var(--blue));
+        width: 12.5%;
+        transition: width 0.3s ease;
+    }
+
+    /* Print styling */
+    @media print {
+        body { overflow: visible; height: auto; }
+        .toolbar, .statusbar, .progress-bar-container { display: none !important; }
+        .presentation-container { display: block; padding: 0; }
+        .slide {
+            position: relative !important;
+            opacity: 1 !important;
+            transform: none !important;
+            page-break-after: always;
+            width: 100% !important;
+            height: 100vh !important;
+            max-width: none !important;
+            max-height: none !important;
+            border-radius: 0 !important;
+            border: none !important;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <!-- Top Toolbar -->
+    <div class="toolbar">
+        <div class="brand">
+            <div class="brand-logo">V</div>
+            <div class="brand-title">SOCHI VAYU</div>
+            <div class="brand-subtitle">Smart Air Quality Telemetry Engine</div>
+        </div>
+        <div class="nav-controls">
+            <button class="btn" onclick="prevSlide()">◀ Previous</button>
+            <span class="slide-counter" id="slide-num">Slide 1 / 8</span>
+            <button class="btn btn-primary" onclick="nextSlide()">Next ▶</button>
+            <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+            <button class="btn" onclick="window.print()">🖨️ Print / PDF</button>
+        </div>
+    </div>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- Presentation Viewport -->
+    <div class="presentation-container">
+
+        <!-- SLIDE 1: TITLE SLIDE -->
+        <div class="slide title-slide active" id="slide-1">
+            <div class="title-tag">Executive Engineering Presentation</div>
+            <h1 class="title-heading">SOCHI VAYU</h1>
+            <div class="title-subheading">Industrial Smart Air Quality & Environmental Telemetry Platform</div>
+            <p class="title-desc">
+                High-precision optical sensing and edge-computing telemetry powered by the dual-core ESP32-S3 microcontroller and the industrial CUBIC AM1008W sensor suite with real-time zero-driver web dashboards.
+            </p>
+            <div class="badge-bar">
+                <span class="pill">⚡ ESP32-S3 Dual-Core 240MHz</span>
+                <span class="pill">🔬 CUBIC AM1008W 5-in-1 Sensor</span>
+                <span class="pill">🌐 Chrome WebSerial Streaming</span>
+                <span class="pill">📡 Standalone Wi-Fi Hotspot (192.168.4.1)</span>
+                <span class="pill">🔒 Zero-Simulation Physical Data</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: PROBLEM & OBJECTIVE -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-category">Problem Statement & Objective</div>
+                    <div class="slide-title">1. Indoor Air Quality Challenges & System Mission</div>
+                </div>
+                <div class="slide-badge">High Impact</div>
+            </div>
+            <div class="slide-body">
+                <div class="col-2">
+                    <div class="card">
+                        <div class="card-title">⚠️ The Invisible Indoor Hazards</div>
+                        <div class="card-subtitle">Critical environmental risks in modern workplaces</div>
+                        <ul class="bullet-list">
+                            <li><strong>CO2 Drowsiness & Cognitive Drop:</strong> Indoor CO2 exceeding 1000 ppm causes noticeable lethargy, headaches, and a documented 15% reduction in decision-making speed.</li>
+                            <li><strong>PM2.5 Microscopic Particles:</strong> Fine combustion particulates (< 2.5 µm) bypass upper respiratory defenses, causing severe respiratory and cardiovascular strain.</li>
+                            <li><strong>Volatile Organic Compounds (VOCs):</strong> Emitted by paints, solvents, and adhesives; accumulate dangerously in sealed, air-conditioned rooms.</li>
+                            <li><strong>Consumer Sensor Drift:</strong> Cheap consumer sensors suffer severe drift, lack NDIR optical reference chambers, and produce erratic readings.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🎯 The SOCHI VAYU Engineering Mission</div>
+                        <div class="card-subtitle">Production-grade accuracy and real-time visibility</div>
+                        <ul class="bullet-list">
+                            <li><strong>Integrated 5-in-1 Optical Module:</strong> Standardizes on the industrial CUBIC AM1008W featuring dual-beam NDIR CO2 and laser scattering PM2.5.</li>
+                            <li><strong>Edge Telemetry Microcontroller:</strong> High-speed ESP32-S3 handles active hexadecimal polling (11 02 01 00 EC) and checksum verification.</li>
+                            <li><strong>Instant Zero-Driver Live Dashboard:</strong> Immediate browser streaming over USB-C via WebSerial (115200 baud) without installing software.</li>
+                            <li><strong>True Sensor Verification:</strong> Completely eliminates synthetic data fallbacks to guarantee 100% authenticated physical telemetry.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: SYSTEM ARCHITECTURE -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-category">System Engineering</div>
+                    <div class="slide-title">2. End-to-End System Architecture & Data Flow</div>
+                </div>
+                <div class="slide-badge">Architecture</div>
+            </div>
+            <div class="slide-body">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-title">1. SENSING</div>
+                        <div class="card-subtitle">CUBIC AM1008W</div>
+                        <ul class="bullet-list">
+                            <li><strong>NDIR Optical Chamber:</strong> 400 - 5000 ppm CO2</li>
+                            <li><strong>Laser Scattering:</strong> 0 - 1000 µg/m³ PM2.5</li>
+                            <li><strong>MOX Sensor:</strong> VOC Index (0 - 500)</li>
+                            <li><strong>Digital SHT:</strong> Temp & Relative Humidity</li>
+                            <li><strong>UART Interface:</strong> 9600 Baud 8N1</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">2. PROCESSING</div>
+                        <div class="card-subtitle">ESP32-S3 Dual-Core</div>
+                        <ul class="bullet-list">
+                            <li><strong>Hardware UART1:</strong> Pins 18 (RX) & 17 (TX)</li>
+                            <li><strong>Master Polling:</strong> 11 02 01 00 EC @ 1.5s</li>
+                            <li><strong>Checksum Engine:</strong> 256 - (Sum % 256)</li>
+                            <li><strong>Bit-Shift Decoder:</strong> 16-bit integer math</li>
+                            <li><strong>Watchdog Timer:</strong> 3.5s timeout reset</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">3. TELEMETRY</div>
+                        <div class="card-subtitle">Multi-Channel Pipe</div>
+                        <ul class="bullet-list">
+                            <li><strong>Channel A (USB):</strong> Native USB CDC Serial</li>
+                            <li><strong>Channel B (Wi-Fi):</strong> SoftAP Hotspot</li>
+                            <li><strong>JSON Protocol:</strong> Structured payload</li>
+                            <li><strong>Heartbeat Counter:</strong> Live uptime tracker</li>
+                            <li><strong>Status Flags:</strong> CONNECTED / DISCONNECTED</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">4. DISPLAY</div>
+                        <div class="card-subtitle">User Interface</div>
+                        <ul class="bullet-list">
+                            <li><strong>WebSerial UI:</strong> Live laptop dashboard</li>
+                            <li><strong>Web Server UI:</strong> http://192.168.4.1</li>
+                            <li><strong>Terminal View:</strong> Clean ASCII tables</li>
+                            <li><strong>Physical Mirror:</strong> 320x240 LCD preview</li>
+                            <li><strong>Future Screen:</strong> Dedicated Kiosk port</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: HARDWARE SPECIFICATIONS -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-category">Hardware Implementation</div>
+                    <div class="slide-title">3. Hardware Specifications & Physical Pinout</div>
+                </div>
+                <div class="slide-badge">Verified Pinout</div>
+            </div>
+            <div class="slide-body">
+                <div class="col-2">
+                    <div class="card">
+                        <div class="card-title">🔌 Sensor Wiring & Pin Connection Matrix</div>
+                        <div class="card-subtitle">Zero-conflict hardware allocation</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Sensor Wire</th>
+                                    <th>ESP32-S3 Pin</th>
+                                    <th>Signal Role</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>TX (Pin 1)</strong></td>
+                                    <td><span style="color:var(--cyan);font-weight:bold;">GPIO 18</span></td>
+                                    <td>RX1 (Input)</td>
+                                    <td>Receives sensor telemetry frames</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RX (Pin 2)</strong></td>
+                                    <td><span style="color:var(--cyan);font-weight:bold;">GPIO 17</span></td>
+                                    <td>TX1 (Output)</td>
+                                    <td>Sends 5-byte poll commands to sensor</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5V (Pin 3)</strong></td>
+                                    <td><span style="color:var(--amber);font-weight:bold;">5V / VBUS</span></td>
+                                    <td>Power (5.0V)</td>
+                                    <td>Powers NDIR IR lamp & optical blower</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GND (Pin 4)</strong></td>
+                                    <td><span style="color:var(--text-muted);font-weight:bold;">GND</span></td>
+                                    <td>Ground (0V)</td>
+                                    <td>Common electrical system ground</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="bullet-list" style="margin-top:8px;">
+                            <li><strong>Hardware Isolation:</strong> UART1 is completely independent from the USB-C programming interface, eliminating serial lockups.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚙️ Core Hardware Benchmarks</div>
+                        <div class="card-subtitle">Industrial component ratings</div>
+                        <ul class="bullet-list">
+                            <li><strong>ESP32-S3-WROOM-1:</strong> 32-bit Xtensa dual-core LX7 processor running at 240 MHz with 512 KB SRAM and 8 MB Quad-SPI Flash memory.</li>
+                            <li><strong>NDIR Carbon Dioxide Chamber:</strong> Dual-beam non-dispersive infrared optics. Dynamic range 400 - 5000 ppm with ±50 ppm precision.</li>
+                            <li><strong>Laser Scattering PM2.5:</strong> Optical light-scattering chamber detecting fine dust (0 - 1000 µg/m³) with rapid 1-second response time.</li>
+                            <li><strong>Digital SHT Module:</strong> Calibrated temperature (-10°C to +50°C, ±0.5°C) and relative humidity (0% - 95%, ±3%).</li>
+                            <li><strong>Dual USB Architecture:</strong> Dedicated CP2102 UART bridge on Left USB-C; Native USB-OTG CDC telemetry engine on Right USB-C.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: PROTOCOL & DECODING -->
+        <div class="slide" id="slide-5">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-category">Firmware Engineering</div>
+                    <div class="slide-title">4. Hexadecimal Protocol & Bit-Shift Decoding Engine</div>
+                </div>
+                <div class="slide-badge">Protocol Engine</div>
+            </div>
+            <div class="slide-body">
+                <div class="col-2">
+                    <div class="card">
+                        <div class="card-title">📡 Active Master Request-Response Handshake</div>
+                        <div class="card-subtitle">Strict timing query loop every 1.5 seconds</div>
+                        <ul class="bullet-list">
+                            <li><strong>Master Request Frame:</strong> <code>11 02 01 00 EC</code>
+                                <br><small>• 0x11: Frame Header | • 0x02: Payload Length | • 0x01: Read Results | • 0x00: Option | • 0xEC: Checksum</small>
+                            </li>
+                            <li><strong>Response Packet Layout (14 to 26 Bytes):</strong>
+                                <br><small>• Byte 0: <code>0x16</code> (Frame Sync Header)
+                                <br>• Byte 1: Payload Byte Count (N)
+                                <br>• Bytes 3-4: <code>CO2 = (Byte 3 &lt;&lt; 8) | Byte 4</code>
+                                <br>• Bytes 5-6: <code>PM2.5 = (Byte 5 &lt;&lt; 8) | Byte 6</code>
+                                <br>• Bytes 7-8: <code>Temp = ((int16)(Byte 7 &lt;&lt; 8) | Byte 8) / 10.0</code>
+                                <br>• Bytes 9-10: <code>Hum = ((Byte 9 &lt;&lt; 8) | Byte 10) / 10.0</code>
+                                <br>• Bytes 11-12: <code>VOC = (Byte 11 &lt;&lt; 8) | Byte 12</code></small>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🛡️ Data Integrity & Zero-Simulation Guarantee</div>
+                        <div class="card-subtitle">Fault-tolerant embedded processing</div>
+                        <ul class="bullet-list">
+                            <li><strong>Mathematical Checksum Verification:</strong>
+                                <br><code>CS = (256 - (Sum of Bytes[0..N-1] % 256)) &amp; 0xFF</code>
+                                <br>Corrupted frames resulting from electrical noise are discarded instantly before touching the data model.
+                            </li>
+                            <li><strong>Watchdog Disconnection Timeout (3.5s):</strong> If sensor wires are detached, telemetry resets cleanly to 0, broadcasting <code>"sensor":"DISCONNECTED"</code>.</li>
+                            <li><strong>No Synthetic Data Leak:</strong> Completely purged demo drift routines; dashboards represent 100% verified physical sensor hardware.</li>
+                            <li><strong>Circular Frame Buffer:</strong> Non-blocking state machine automatically resynchronizes on the <code>0x16</code> header byte.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: MULTI-CHANNEL DASHBOARD -->
+        <div class="slide" id="slide-6">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-category">User Interface & Telemetry</div>
+                    <div class="slide-title">5. Multi-Channel Visualization Architecture</div>
+                </div>
+                <div class="slide-badge">Zero-Install UI</div>
+            </div>
+            <div class="slide-body">
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-title">🌐 WebSerial Dashboard</div>
+                        <div class="card-subtitle">Zero-driver browser streaming</div>
+                        <ul class="bullet-list">
+                            <li>Connects over USB-C via Google Chrome or Microsoft Edge.</li>
+                            <li>One-click serial connection at <strong>115200 baud</strong>.</li>
+                            <li>Displays 5 dynamic glassmorphism metric cards.</li>
+                            <li>Dynamic color-coded health badges (Good / Moderate / High).</li>
+                            <li>Features a real-time 320x240 LCD hardware mirror.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📡 Standalone Wi-Fi Hotspot</div>
+                        <div class="card-subtitle">Router-free wireless access</div>
+                        <ul class="bullet-list">
+                            <li>ESP32 acts as a SoftAP: <code>VAYU_AIR_DASHBOARD</code>.</li>
+                            <li>Embedded HTTP web server on Port 80.</li>
+                            <li>Direct browser access at <strong>http://192.168.4.1</strong>.</li>
+                            <li>Works seamlessly from any smartphone, tablet, or PC.</li>
+                            <li>Serves live telemetry via <code>/api/data</code> REST endpoint.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🖥️ Industrial Terminal Stream</div>
+                        <div class="card-subtitle">Raw telemetry for logging & IoT</div>
+                        <ul class="bullet-list">
+                            <li>Outputs structured JSON packets: <code>DATA:{"co2":...}</code>.</li>
+                            <li>Human-readable formatted ASCII summary tables.</li>
+                            <li>Directly ingestible by Python data loggers or MQTT bridges.</li>
+                            <li>Compatible with VS Code Monitor, PuTTY, and Arduino IDE.</li>
+                            <li>Outputs continuous heartbeat and hardware status flags.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: BENCHMARKS & VERIFICATION -->
+        <div class="slide" id="slide-7">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-category">Standards & Validation</div>
+                    <div class="slide-title">6. Environmental Benchmarks & Lab Verification</div>
+                </div>
+                <div class="slide-badge">Lab Verified</div>
+            </div>
+            <div class="slide-body">
+                <div class="col-2">
+                    <div class="card">
+                        <div class="card-title">📊 International Health Thresholds</div>
+                        <div class="card-subtitle">WHO, OSHA, and ASHRAE guidelines</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Ideal / Safe</th>
+                                    <th>Moderate</th>
+                                    <th>Action Required</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>CO2</strong></td>
+                                    <td><span style="color:var(--green);font-weight:bold;">&lt; 800 ppm</span></td>
+                                    <td>800 - 1200 ppm</td>
+                                    <td><span style="color:var(--red);font-weight:bold;">&gt; 1200 ppm</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PM 2.5</strong></td>
+                                    <td><span style="color:var(--green);font-weight:bold;">&lt; 15 µg/m³</span></td>
+                                    <td>15 - 35 µg/m³</td>
+                                    <td><span style="color:var(--red);font-weight:bold;">&gt; 35 µg/m³</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Temperature</strong></td>
+                                    <td><span style="color:var(--green);font-weight:bold;">20°C - 24°C</span></td>
+                                    <td>24°C - 28°C</td>
+                                    <td><span style="color:var(--red);font-weight:bold;">&gt; 28°C / &lt; 18°C</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Humidity</strong></td>
+                                    <td><span style="color:var(--green);font-weight:bold;">40% - 60%</span></td>
+                                    <td>30-40% / 60-70%</td>
+                                    <td><span style="color:var(--red);font-weight:bold;">&lt; 30% / &gt; 70%</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VOC Index</strong></td>
+                                    <td><span style="color:var(--green);font-weight:bold;">&lt; 100 Index</span></td>
+                                    <td>100 - 250 Index</td>
+                                    <td><span style="color:var(--red);font-weight:bold;">&gt; 250 Index</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🧪 Laboratory Endurance Testing</div>
+                        <div class="card-subtitle">Key empirical results</div>
+                        <ul class="bullet-list">
+                            <li><strong>Warmup Time:</strong> Sensor achieves baseline optical stabilization within ~60 seconds of initial 5V power application.</li>
+                            <li><strong>Steady-State Ambient Verification:</strong> Baseline indoor ambient air verified at CO2: 620 - 740 ppm, PM2.5: 12 - 18 µg/m³, Temp: 24.1°C, Humidity: 51.0%.</li>
+                            <li><strong>Port Contention Resolution:</strong> Overcame Windows Bluetooth virtual serial collisions by hardcoding native USB DTR/RTS assertions and auto-clearing COM locks.</li>
+                            <li><strong>Endurance Testing:</strong> Achieved continuous 6-hour operation with zero dropped packets and zero memory leaks.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: FUTURE ROADMAP -->
+        <div class="slide" id="slide-8">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-category">Product Roadmap</div>
+                    <div class="slide-title">7. Standalone Deployment & Production Roadmap</div>
+                </div>
+                <div class="slide-badge">Roadmap</div>
+            </div>
+            <div class="slide-body">
+                <div class="col-2">
+                    <div class="card">
+                        <div class="card-title">🖥️ Option A: Raspberry Pi Zero 2W Kiosk</div>
+                        <div class="card-subtitle">Best deployment for existing 7" HDMI LCD(H)</div>
+                        <ul class="bullet-list">
+                            <li><strong>Native HDMI Video Interface:</strong> Plugs directly into the 7-inch HDMI monitor using a mini-HDMI to HDMI cable.</li>
+                            <li><strong>Embedded Linux Kiosk Mode:</strong> Boots in ~15 seconds directly into full-screen Chromium displaying the local dashboard.</li>
+                            <li><strong>Touchscreen Control:</strong> Screen's USB touch cable plugs into the Pi for full capacitive touch interactivity.</li>
+                            <li><strong>Completely Standalone:</strong> AM1008W wires to Pi GPIO UART pins; runs 24/7 from a standard 5V wall adapter with <strong>zero laptop and zero Wi-Fi required</strong>.</li>
+                            <li><strong>Cost:</strong> Economical ~$15 - $20 addition.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📱 Option B: Integrated ESP32-S3 7" Display</div>
+                        <div class="card-subtitle">Direct microcontroller architecture</div>
+                        <ul class="bullet-list">
+                            <li><strong>All-in-One Module:</strong> Utilizes boards like Sunton ESP32-8048S070 with ESP32-S3 built on the back of the 7-inch panel.</li>
+                            <li><strong>High-Speed Parallel RGB:</strong> Connects directly over a 16-bit RGB565 ribbon bus (no HDMI conversion latency).</li>
+                            <li><strong>Sub-Second Boot Time:</strong> Compiles our raw LVGL C++ UI directly into flash; boots in under 800 milliseconds.</li>
+                            <li><strong>Ultra-Low Power Footprint:</strong> Consumes under 2.5W total power (ideal for battery or solar applications).</li>
+                            <li><strong>IoT Cloud Gateway:</strong> Seamlessly publish telemetry to MQTT / AWS IoT / ThingsBoard.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Status Bar -->
+    <div class="statusbar">
+        <div>Use <strong>◀ ▶ Arrow Keys</strong> or <strong>Spacebar</strong> to navigate &bull; Press <strong>F</strong> for Fullscreen</div>
+        <div>SOCHI VAYU &bull; Confidential &amp; Proprietary</div>
+    </div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 8;
+
+    function showSlide(n) {
+        if (n < 1) n = 1;
+        if (n > totalSlides) n = totalSlides;
+        currentSlide = n;
+
+        for (let i = 1; i <= totalSlides; i++) {
+            const el = document.getElementById(`slide-${i}`);
+            if (el) {
+                if (i === currentSlide) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            }
+        }
+
+        document.getElementById('slide-num').innerText = `Slide ${currentSlide} / ${totalSlides}`;
+        document.getElementById('progress-bar').style.width = `${(currentSlide / totalSlides) * 100}%`;
+    }
+
+    function nextSlide() {
+        if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+        if (currentSlide > 1) showSlide(currentSlide - 1);
+    }
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {});
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            prevSlide();
+        } else if (e.key.toLowerCase() === 'f') {
+            toggleFullscreen();
+        } else if (e.key === 'Home') {
+            showSlide(1);
+        } else if (e.key === 'End') {
+            showSlide(totalSlides);
+        }
+    });
+
+    showSlide(1);
+</script>
+</body>
+</html>

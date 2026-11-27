@@ -1,0 +1,46 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  application:
+    name: vayu-monitoring-backend
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+
+vayu:
+  customer:
+    site-name: ${CUSTOMER_SITE_NAME:SOCHI-HQ-BLDG1}
+  telemetry:
+    stale-threshold-seconds: ${TELEMETRY_STALE_THRESHOLD_SECONDS:30}
+    offline-threshold-seconds: ${TELEMETRY_OFFLINE_THRESHOLD_SECONDS:60}
+  mqtt:
+    broker-host: ${MQTT_BROKER_HOST:localhost}
+    broker-port: ${MQTT_BROKER_PORT:1883}
+    username: ${MQTT_BACKEND_USERNAME:vayu_backend}
+    password: ${MQTT_BACKEND_PASSWORD:VayuBackend2026!}
+    client-id: ${MQTT_BACKEND_CLIENT_ID:vayu_backend_core}
+  fleet:
+    initial-devices: ${INITIAL_DEVICE_LIST:VAYU-001,VAYU-002,VAYU-003,VAYU-004,VAYU-005}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.sochi.vayu: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

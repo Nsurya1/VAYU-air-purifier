@@ -1,0 +1,42 @@
+# Dependencies
+**/node_modules/
+node_modules/
+
+# Build outputs
+**/target/
+target/
+**/dist/
+dist/
+**/build/
+build/
+*.class
+
+# IDE & Editor files
+.idea/
+**/.idea/
+*.iml
+.vscode/
+**/.vscode/
+
+# Environment files & local secrets
+.env
+**/.env
+!.env.example
+!**/.env.example
+
+# Logs & temp files
+*.log
+**/*.log
+*.tmp
+**/*.tmp
+.DS_Store
+Thumbs.db
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Mosquitto runtime data and logs
+**/mosquitto/data/
+**/mosquitto/log/
+mosquitto/data/
+mosquitto/log/

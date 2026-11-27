@@ -1,0 +1,18 @@
+# ==============================================================================
+# SOCHI VAYU - Mosquitto Topic Access Control Lists (ACLs)
+# ==============================================================================
+
+# 1. Spring Boot Backend Gateway
+user vayu_backend
+topic read vayu/+/telemetry
+topic read vayu/+/status
+topic write vayu/+/cmd
+topic read vayu/+/cmd/ack
+topic read $SYS/#
+
+# 2. VAYU Devices & Fleet Simulator
+user vayu_device
+topic write vayu/+/telemetry
+topic write vayu/+/status
+topic read vayu/+/cmd
+topic write vayu/+/cmd/ack

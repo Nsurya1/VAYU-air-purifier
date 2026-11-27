@@ -1,0 +1,123 @@
+services:
+  # 1. Eclipse Mosquitto MQTT Ingestion Broker
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: vayu-mosquitto
+    restart: unless-stopped
+    ports:
+      - "${MQTT_PORT:-1883}:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:ro
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "1883"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - vayu-network
+
+  # 2. Spring Boot Core Service & In-Memory State Manager
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vayu-backend
+    restart: unless-stopped
+    expose:
+      - "8080"
+    environment:
+      - CUSTOMER_SITE_NAME=${CUSTOMER_SITE_NAME:-SOCHI-HQ-BLDG1}
+      - MQTT_BROKER_HOST=mosquitto
+      - MQTT_BROKER_PORT=1883
+      - MQTT_BACKEND_USERNAME=${MQTT_BACKEND_USERNAME:-vayu_backend}
+      - MQTT_BACKEND_PASSWORD=${MQTT_BACKEND_PASSWORD:-VayuBackend2026!}
+      - TELEMETRY_STALE_THRESHOLD_SECONDS=${TELEMETRY_STALE_THRESHOLD_SECONDS:-30}
+      - TELEMETRY_OFFLINE_THRESHOLD_SECONDS=${TELEMETRY_OFFLINE_THRESHOLD_SECONDS:-60}
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - vayu-network
+
+  # 3. React / Nginx Local Monitoring Dashboard
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vayu-frontend
+    restart: unless-stopped
+    ports:
+      # Exposes dashboard to authorized devices on the customer's local network
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - vayu-network
+
+  # 4. Multi-Device Fleet Simulator (Optional profile or test run)
+  simulator:
+    build:
+      context: ./simulator
+      dockerfile: Dockerfile
+    container_name: vayu-simulator
+    profiles:
+      - simulator
+      - dev
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=${MQTT_SIMULATOR_USERNAME:-vayu_simulator}
+      - MQTT_PASSWORD=${MQTT_SIMULATOR_PASSWORD:-VayuSim2026!}
+      - DEVICE_COUNT=${SIMULATOR_DEVICE_COUNT:-5}
+      - INTERVAL_SECONDS=${SIMULATOR_INTERVAL_SECONDS:-5}
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+    networks:
+      - vayu-network
+
+networks:
+  vayu-network:
+    name: vayu-local-network
+    driver: bridge
