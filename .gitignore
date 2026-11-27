@@ -1,8 +1,6 @@
-# Dependencies
+# Dependencies & Build artifacts
 **/node_modules/
 node_modules/
-
-# Build outputs
 **/target/
 target/
 **/dist/
@@ -11,6 +9,12 @@ dist/
 build/
 *.class
 
+# PlatformIO & Embedded build files
+**/.pio/
+.pio/
+**/.cph/
+.cph/
+
 # IDE & Editor files
 .idea/
 **/.idea/
@@ -18,7 +22,7 @@ build/
 .vscode/
 **/.vscode/
 
-# Environment files & local secrets
+# Environment & secrets
 .env
 **/.env
 !.env.example
@@ -35,8 +39,19 @@ __pycache__/
 **/__pycache__/
 *.pyc
 
-# Mosquitto runtime data and logs
-**/mosquitto/data/
-**/mosquitto/log/
-mosquitto/data/
-mosquitto/log/
+# Local server & SAAS stacks (excluded from device repository)
+demo/
+vayumonitoringSAAS/
+doc/
+
+# Presentation & document files
+*.pdf
+*.pptx
+*.py
+*.ps1
+SOCHI_VAYU_Presentation.html
+SOCHI_VAYU_Project_Presentation.md
+
+# Duplicate dashboard files in vayucode
+vayucode/*.html
+vayucode/vayu_logo.png

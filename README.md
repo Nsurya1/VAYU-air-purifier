@@ -1,4 +1,4 @@
-# SOCHI VAYU: Smart Air Quality & Environmental Telemetry Platform
+# SOCHI VAYU: Smart Air Quality Monitor & Purifier
 
 [![VAYU](vayu_logo.png)](https://github.com/Nsurya1/VAYU-air-purifier)
 
@@ -8,75 +8,86 @@
 
 > 🌐 **Live Web Monitor & Cloud Telemetry:** [https://vayumonitoring.netlify.app/](https://vayumonitoring.netlify.app/)
 
-**SOCHI VAYU** is an industrial-grade smart air quality and environmental telemetry solution combining edge microcontrollers, optical multi-sensor modules, and modern web dashboards.
-
----
-
-## 🌐 Live Cloud Deployment
-
-Access the production telemetry dashboard instantly from anywhere:
-👉 **[https://vayumonitoring.netlify.app/](https://vayumonitoring.netlify.app/)**
-
-- **Zero Software Setup:** Connect directly to your ESP32-S3 over USB-C via the browser's native WebSerial API (115200 Baud).
-- **Cross-Platform:** Works on Chrome, Microsoft Edge, Opera, Brave, and other Chromium browsers on Windows, macOS, Linux, and Android.
-- **5 Integrated Screens:** Real-time AQI ring gauge, 6-parameter summary cards, multi-wave air quality trends, live telemetry streams, and hardware diagnostics.
-
----
-
-## 🚀 Key Features
-
-- **Industrial Sensing Suite**: CUBIC AM1008W (5-in-1 NDIR/Laser) for physical CO2, PM1.0, PM2.5, PM10, VOC, Temperature, and Humidity.
-- **Edge Microcontroller**: ESP32-S3 Dual-Core 240MHz with custom UART master-slave polling (`11 02 01 00 EC`) and checksum validation.
-- **Zero-Driver Web Dashboard**: Instant browser streaming via WebSerial API over USB-C (115200 Baud) or standalone Wi-Fi AP (`192.168.4.1`).
-- **5 Integrated Monitoring Screens**:
-  1. **Primary Air Quality Overview**: Real-time AQI ring gauge, 6-parameter summary cards, multi-wave air quality trends, and status diagnostics.
-  2. **Detailed Environmental Trends**: Dedicated trend charts for CO2, PM2.5, Temperature, and VOC.
-  3. **Live Telemetry & Diagnostics**: Dual-split high-visibility live telemetry stream and raw sensor registers.
-  4. **Device Controls & Calibration**: Zero-calibration, fan boost mode, and buzzer controls.
-  5. **Network & System Settings**: Wi-Fi configuration, MQTT broker endpoints, and OTA updates.
-- **Persistent SOCHI Branding**: Clean UI layout with vibrant SOCHI orange accent (`#f97316`) and embedded transparent VAYU branding.
-
 ---
 
 ## 📁 Repository Structure
 
+This repository contains the core software and firmware stack for the **VAYU Air Monitor & Purifier**:
+
 ```
 .
-├── index.html                           # Main web monitoring dashboard
-├── vayu_logo.png                        # Transparent VAYU branding logo
-├── SOCHI_VAYU_Project_Presentation.md   # Presentation deck and system architecture
-├── SOCHI_VAYU_Presentation.html         # Interactive slide presentation
-├── SOCHI_VAYU_Master_Report.pdf         # Master technical report
+├── index.html                           # 🌐 VAYU Live Web Dashboard (WebSerial + Netlify)
+├── vayu_logo.png                        # Official VAYU branding logo
 ├── netlify.toml                         # Netlify deployment configuration
 ├── _redirects                           # Web routing rules
-├── vayucode/                            # Embedded firmware and hardware code
-│   ├── index.html                       # Synchronized dashboard copy
-│   ├── VAYU_Air_Monitor_UI.html         # Local dashboard file
-│   ├── Live_Laptop_Dashboard.html       # Laptop serial dashboard
-│   ├── ESP32_Test/                      # ESP32-S3 test sketches & firmware
-│   ├── SOCHI_VAYU_Screen_UI/            # Screen UI components
-│   └── Future_Display_Code/             # Extended display firmware
-├── demo/                                # Local monitoring system & microservices
-└── vayumonitoringSAAS/                  # Cloud SaaS backend & telemetry simulator
+├── .gitignore                           # Git ignore rules
+├── README.md                            # Complete setup & flashing guide
+│
+└── vayucode/
+    ├── ESP32_Test/                      # ⚡ ESP32 Firmware for Testing (WebSerial & Wi-Fi)
+    │   ├── platformio.ini               # PlatformIO build configuration
+    │   └── src/
+    │       └── main.cpp                 # UART hex polling engine & serial streamer
+    │
+    ├── SOCHI_VAYU_Screen_UI/            # 🖥️ Final Standalone LVGL Code (No laptop required!)
+    │   ├── SOCHI_VAYU_Screen_UI.ino     # LovyanGFX + LVGL 8.3.11 screen driver
+    │   └── README_SETUP_GUIDE.md        # Arduino IDE & library setup instructions
+    │
+    └── Future_Display_Code/             # 📱 Alternative SPI TFT Display Implementation
+        ├── display_dashboard.cpp        # TFT_eSPI rendering engine
+        └── DISPLAY_SETUP_GUIDE.md       # Display wiring & setup guide
 ```
 
 ---
 
-## 🛠️ Quick Start
+## 1. 🌐 VAYU Live Web Dashboard (`index.html`)
 
-### 1. Launch the Live Web Dashboard
-Visit **[https://vayumonitoring.netlify.app/](https://vayumonitoring.netlify.app/)** or open `index.html` locally in any Chromium browser.
+An industrial zero-driver dashboard for real-time monitoring and sensor diagnostics.
 
-1. Click **Connect Device** (WebSerial API).
-2. Select your ESP32-S3 serial port (115200 baud).
-3. Telemetry streams directly in real-time.
-
-### 2. Standalone Wi-Fi Mode
-1. Connect your phone or laptop to Wi-Fi SSID: `VAYU_AIR_MONITOR` (Password: `vayu12345`).
-2. Open your browser and navigate to `http://192.168.4.1`.
+* **Live Deployment:** [https://vayumonitoring.netlify.app/](https://vayumonitoring.netlify.app/)
+* **Zero Software Setup:** Connect directly to your ESP32-S3 over USB-C via the browser's native **WebSerial API** (115200 Baud).
+* **Cross-Platform:** Works on Google Chrome, Microsoft Edge, Opera, and Brave on Windows, macOS, Linux, and Android.
+* **Features:**
+  - Real-time AQI ring gauge and 6-parameter summary cards (CO2, PM2.5, PM10, VOC, Temperature, Humidity).
+  - Multi-wave air quality trends and dual-split live telemetry logs.
+  - Zero-scroll layout optimized for both desktop and 7-inch embedded kiosks.
+  - Persistent SOCHI orange brand footer (`#f97316`).
 
 ---
 
-## 🛡️ License & Attribution
+## 2. ⚡ ESP32 Testing Firmware (`vayucode/ESP32_Test/`)
 
-Designed and developed by **SOCHI** for the **VAYU Air Purifier & Environmental Intelligence Platform**.
+Firmware for hardware verification, bench testing, and USB-C serial streaming to the web dashboard.
+
+* **Toolchain:** PlatformIO / VS Code.
+* **Microcontroller:** ESP32-S3 Dual-Core (240MHz).
+* **Sensor Module:** CUBIC AM1008W (5-in-1 NDIR CO2 + Laser PM2.5 + MOX VOC).
+* **Hardware Wiring:**
+  - Sensor TX $\rightarrow$ ESP32 **GPIO 18** (RX1)
+  - Sensor RX $\rightarrow$ ESP32 **GPIO 17** (TX1)
+  - Sensor 5V $\rightarrow$ ESP32 **5V / VBUS**
+  - Sensor GND $\rightarrow$ ESP32 **GND**
+* **How It Works:**
+  - Actively polls the sensor using hex command `11 02 01 00 EC` with checksum validation.
+  - Streams clean JSON telemetry over Serial (115200 Baud) to `index.html`.
+  - Automatically hosts an access point `VAYU_AIR_DASHBOARD` (`192.168.4.1`) for local Wi-Fi telemetry.
+
+---
+
+## 3. 🖥️ Final ESP32 LVGL Standalone Display Code (`vayucode/SOCHI_VAYU_Screen_UI/`)
+
+**Runs 100% independently on the device with zero dependency on a laptop or external PC!**
+
+* **Toolchain:** Arduino IDE.
+* **Display & Touch:** ST7796S 480x320 SPI LCD + FT6336U Capacitive Touch.
+* **Graphics Framework:** **LovyanGFX** + **LVGL v8.3.11** with PSRAM double-buffering.
+* **Key Features:**
+  - Full standalone touch UI rendered directly on the physical screen.
+  - Independent UART sensor polling on Core 1 while LVGL renders smoothly on Core 0.
+  - Complete instructions and library setup in `vayucode/SOCHI_VAYU_Screen_UI/README_SETUP_GUIDE.md`.
+
+---
+
+## 🛡️ Attribution & License
+
+Designed and developed by **SOCHI** for the **VAYU Smart Air Quality Platform**.
